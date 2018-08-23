@@ -5,13 +5,12 @@ import withRedux from "next-redux-wrapper";
 import {initStore} from "../redux/store";
 import initialize from '../utils/initialize'
 import ConnectedLayout from "../components/Layout";
-import '../assets/css/bulma.min.css';
 
 export default withRedux(initStore, {debug: true})(class MyApp extends App {
 
     static async getInitialProps({Component, ctx}) {
         console.log(ctx);
-        // initialize(ctx);
+        initialize(ctx);
         return {
             pageProps: {
                 // Call page-level getInitialProps
