@@ -7,9 +7,10 @@ class Home extends React.Component {
        
     }
     render(){
+        const {user} = this.props
         return (
-            <Layout isAuthenticated>
-                <div >Hello</div>
+            <Layout>
+                <div >{user ? user.username: ''}</div>
             </Layout>
             
         )
@@ -17,6 +18,6 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = (state) => (
-    {isAuthenticated: !!state.authentication.token}
+    {user: state.authentication.user}
   );
 export default connect(mapStateToProps)(Home);

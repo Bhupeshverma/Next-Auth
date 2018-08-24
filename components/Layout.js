@@ -3,17 +3,11 @@ import {connect} from "react-redux";
 import Link from 'next/link';
 import Head from 'next/head';
 import LoginModel from './LoginModel';
-import { Menu , Container, Segment, List, Grid, Header, Divider, Image, Input, Icon, Button, Message} from "semantic-ui-react";
-
+import { Menu , Container, Segment, List, Grid, Header, Divider, Image, Input, Button, Message, Dropdown} from "semantic-ui-react";
+import actions from "../redux/actions";
 
 class Layout extends React.Component {
     
-
-    static  getInitialProps({store, isServer, pathname, query}) {
-        console.log(isServer);
-        
-    }
-
     constructor(props){
         super(props);
         this.state = {
@@ -29,9 +23,19 @@ class Layout extends React.Component {
     handleLogin = () => {
         this.setState({modalOpen: true})
     }
+
+    handleLogout = () => {
+        this.props.deauthenticate();
+    }
+
+    trigger = (user) => (
+    <span>
+        <Image size='mini' avatar src={user.avatar_url} /> {user.username}
+    </span>
+    )
     render() {
       const { activeItem } = this.state
-      const { isAuthenticated, children } = this.props
+      const { isAuthenticated, children, user } = this.props
       return (
         <div>
           <Head>
@@ -57,16 +61,28 @@ class Layout extends React.Component {
             active={activeItem === 'messages'}
             onClick={this.handleItemClick}
             />
-            { isAuthenticated ?<Menu.Item
-            name='Submit a Competition'
-            active={activeItem === 'friends'}
-            onClick={this.handleItemClick}
-            />: ''}
-            {isAuthenticated ?<Menu.Item
-                name='logout'
-                active={activeItem === 'logout'}
-                onClick={this.handle}
-            />: ''}
+            { 
+                isAuthenticated ?
+                <Link href="/org-info">
+                <Menu.Item
+                name='Submit a Competition'
+                active={activeItem === 'friends'}
+                /></Link>
+                : 
+                ''
+            }
+            {
+                isAuthenticated ?
+                <Menu.Item>
+                    <Dropdown trigger={this.trigger(user)}>
+                    <Dropdown.Menu>
+                        <Dropdown.Item  icon='sign out' text='Sign Out' onClick={this.handleLogout}/>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Menu.Item>
+                : 
+                ''
+            }
             {!isAuthenticated ?
             <Menu.Item>
                 <LoginModel />
@@ -78,24 +94,36 @@ class Layout extends React.Component {
           <Segment style={{ margin: '5em 0em 0em', padding: '5em 0em', background: 'azure' }} vertical>
           <Container textAlign='center'>
             <Image size='medium' src='./images/logo.png' style={{ width: '100px', margin: 'auto'}}/>
-            <div style={{margin: '20px'}}>
-                <Button circular  icon='settings' style={{marginLeft: '15px', backgroundColor: '#000', color: '#fff'}}/>
-                <Button circular  icon='tty' style={{marginLeft: '15px', backgroundColor: '#000', color: '#fff'}}/>
-                <Button circular  icon='settings' style={{marginLeft: '15px', backgroundColor: '#000', color: '#fff'}}/>
-                <Button circular  icon='settings' style={{marginLeft: '15px', backgroundColor: '#000', color: '#fff'}}/>
+            <div>
+                <Button circular  icon='settings' style={{background: '#000', color: '#fff', marginLeft: '20px'}}/>
+                <Button circular  icon='tty' style={{background: '#000', color: '#fff', marginLeft: '20px'}}/>
+                <Button circular  icon='settings' style={{background: '#000', color: '#fff', marginLeft: '20px'}}/>
+                <Button circular  icon='settings' style={{background: '#000', color: '#fff', marginLeft: '20px'}}/>
             </div>
-            <p style={{fontSize: '12px', fontfamily: 'Roboto, Light'}}>Copyright <strong  style={{fontWeight: 'bolder'}}>® UNI</strong> as UNIEGIS NETWORK PRIVATE LIMITED // All Rights Reserved</p>
-            <p style={{fontSize: '12px', fontfamily: 'Roboto, Light'}}>List/Host a compeition on UNI. Learn more about <b >Competitions on UNI</b></p>
+            <style jsx>{`
+                div {
+                    margin: 20px
+                },
+                `}</style>
+            <p >Copyright <b>® UNI</b> as UNIEGIS NETWORK PRIVATE LIMITED // All Rights Reserved</p>
+            <p >List/Host a compeition on UNI. Learn more about <b >Competitions on UNI</b></p>
+            <style jsx>{`
+                p {
+                    font-size: 12px;
+                    font-family: Roboto, Light;
+
+                },
+                `}</style>
             <div>
                 <List horizontal divided link>
                 <List.Item disabled href='#'>
                     © GitHub, Inc.
                 </List.Item>
-                <List.Item as='a'  href='#'>Help</List.Item>
-                <List.Item href='#'>Join Us</List.Item>
-                <List.Item href='#'>Privacy</List.Item>
-                <List.Item href='#'>Terms</List.Item>
-                <List.Item href='#'>About</List.Item>
+                <List.Item as='a'  href='#'><b>Help</b></List.Item>
+                <List.Item href='#'><b>Join Us</b></List.Item>
+                <List.Item href='#'><b>Privacy</b></List.Item>
+                <List.Item href='#'><b>Terms</b></List.Item>
+                <List.Item href='#'><b>About</b></List.Item>
                 </List>
             </div> 
           </Container>
@@ -106,7 +134,7 @@ class Layout extends React.Component {
   }
 
   const mapStateToProps = (state) => (
-    {isAuthenticated: !!state.authentication.token}
+    {isAuthenticated: !!state.authentication.token && !!state.authentication.user, user: state.authentication.user }
   );
 
-export default connect(mapStateToProps)(Layout);
+export default connect(mapStateToProps, actions)(Layout);
