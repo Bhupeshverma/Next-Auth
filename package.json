@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "analyze": "ANALYZE=1 next build"
   },
   "keywords": [],
   "author": "",
@@ -18,19 +19,27 @@
     "css-loader": "^1.0.0",
     "express": "^4.16.3",
     "file-loader": "^2.0.0",
+    "formik": "^1.1.1",
     "js-cookie": "^2.2.0",
     "js-cookies": "^1.0.4",
+    "localforage": "^1.7.2",
     "next": "^6.1.1",
     "next-redux-wrapper": "^2.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
+    "redux-form": "^7.4.2",
+    "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.82.3",
-    "url-loader": "^1.1.1"
+    "url-loader": "^1.1.1",
+    "webpack-bundle-analyzer": "^2.13.1",
+    "yup": "0.23.0"
   },
   "devDependencies": {
-    "redux-devtools-extension": "^2.13.5"
+    "babel-preset-env": "^1.7.0",
+    "redux-devtools-extension": "^2.13.5",
+    "webpack-bundle-analyzer": "^2.13.1"
   }
 }

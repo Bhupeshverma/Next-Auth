@@ -5,7 +5,7 @@ import Head from 'next/head';
 import LoginModel from './LoginModel';
 import { Menu , Container, Segment, List, Grid, Header, Divider, Image, Input, Button, Message, Dropdown} from "semantic-ui-react";
 import actions from "../redux/actions";
-
+import Nav from './layout/Header'
 class Layout extends React.Component {
     
     constructor(props){
@@ -90,12 +90,13 @@ class Layout extends React.Component {
             </Menu.Menu>
             </Container>
             </Menu>
+        {/* <Nav isAuthenticated user/> */}
           {children}
           <Segment style={{ margin: '5em 0em 0em', padding: '5em 0em', background: 'azure' }} vertical>
           <Container textAlign='center'>
             <Image size='medium' src='./images/logo.png' style={{ width: '100px', margin: 'auto'}}/>
             <div>
-                <Button circular  icon='settings' style={{background: '#000', color: '#fff', marginLeft: '20px'}}/>
+                <Button  circular  icon='settings' style={{background: '#000', color: '#fff', marginLeft: '20px'}}/>
                 <Button circular  icon='tty' style={{background: '#000', color: '#fff', marginLeft: '20px'}}/>
                 <Button circular  icon='settings' style={{background: '#000', color: '#fff', marginLeft: '20px'}}/>
                 <Button circular  icon='settings' style={{background: '#000', color: '#fff', marginLeft: '20px'}}/>
@@ -103,9 +104,8 @@ class Layout extends React.Component {
             <style jsx>{`
                 div {
                     margin: 20px
-                },
-                `}</style>
-            <p >Copyright <b>® UNI</b> as UNIEGIS NETWORK PRIVATE LIMITED // All Rights Reserved</p>
+                }                `}</style>
+            <p>Copyright <b>® UNI</b> as UNIEGIS NETWORK PRIVATE LIMITED // All Rights Reserved</p>
             <p >List/Host a compeition on UNI. Learn more about <b >Competitions on UNI</b></p>
             <style jsx>{`
                 p {

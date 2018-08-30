@@ -13,14 +13,15 @@ app.prepare()
     const server = express();
 
     server.use(cookieParser(),express.static('assets'));
-
-    server.get('/signin', (req, res) => {
-      if(req.cookies.token) {
-        res.redirect('/');
+  
+    server.get('/organizationInfo', (req, res) => {
+      if(!req.cookies.user) {
+        res.redirect('/organizationInfo');
       } else {
-        return app.render(req, res, '/signin', req.query);
+        return app.render(req, res, '/organizationInfo', req.query);
       }
     });
+
 
     server.get('/signup', (req, res) => {
       if(req.cookies.token) {

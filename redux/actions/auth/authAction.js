@@ -61,15 +61,25 @@ const authenticate = ({ email, password }, type) => {
   return (dispatch) => {
     const data = JSON.stringify( {email, password});
     dispatch(isLoggingIn());
-    axios.post(`${API}/rest-auth/login/`, data, {headers: {'Content-Type': 'application/json'}})
+    fetch(`${API}/rest-auth/login/`, {
+			method: "OPTIONS",
+			credentials: "include",
+		}).then(resp => console.log(resp.headers)
+    )
+
+    axios.post(`${API}/rest-auth/login/`, data, {	headers: {"Content-Type": "application/json"}})
       .then((response) => {
         setCookie('token', response.data.key);
         dispatch(isToken(response.data.key));
         axios.get(`${API}/rest-auth/user/` + response.data.key + '/')
           .then((response) => {
-            dispatch(loggedIn(response));
+            const user = JSON.stringify(response.data);
+            var d = new Date();
+              d.setTime(d.getTime() + (1*24*60*60*1000));
+              var expires = "expires=" + d.toGMTString();
+              document.cookie = 'user' + "=" + user + ";" + expires + ";path=/";
+              dispatch(loggedIn(response.data));
           })
-        dispatch({type: AUTHENTICATE, payload: response.data.key});
       })
       .catch((error) => {
         if (error.response) {
@@ -88,9 +98,12 @@ const authenticate = ({ email, password }, type) => {
 };
 
 // gets the token from the cookie and saves it in the store
-const reauthenticate = (token) => {
+const reauthenticate = (user) => {
   return (dispatch) => {
-    dispatch(isToken(token));
+    //console.log('user',user);
+    let userr = JSON.parse(user);
+    
+    dispatch(loggedIn(userr));
   };
 };
 
@@ -98,6 +111,7 @@ const reauthenticate = (token) => {
 const deauthenticate = () => {
   return (dispatch) => {
     removeCookie('token');
+    removeCookie('user');
     dispatch(loggedOut());
     Router.push('/');
   };

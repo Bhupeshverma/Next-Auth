@@ -37,6 +37,7 @@ const getCookieFromServer = (key, req) => {
   const rawCookie = req.headers.cookie
     .split(';')
     .find(c => c.trim().startsWith(`${key}=`));
+    
   if (!rawCookie) {
     return undefined;
   }

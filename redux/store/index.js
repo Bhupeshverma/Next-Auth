@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-
 export const initStore = (initialState = {}) => {
-  return createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(thunk)));
+  const store =  createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(thunk)));
+  return store;
 };

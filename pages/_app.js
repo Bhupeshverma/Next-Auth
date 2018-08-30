@@ -3,13 +3,11 @@ import {Provider} from "react-redux";
 import App, {Container} from "next/app";
 import withRedux from "next-redux-wrapper";
 import {initStore} from "../redux/store";
-import initialize from '../utils/initialize'
-import ConnectedLayout from "../components/Layout";
+import initialize from '../utils/initialize';
 
 export default withRedux(initStore, {debug: true})(class MyApp extends App {
 
     static async getInitialProps({Component, ctx}) {
-        console.log(ctx);
         initialize(ctx);
         return {
             pageProps: {
@@ -22,6 +20,8 @@ export default withRedux(initStore, {debug: true})(class MyApp extends App {
 
     render() {
         const {Component, pageProps, store} = this.props;
+        console.log(Component);
+        
         return (
             <Container>
                 <Provider store={store}>
